@@ -97,8 +97,15 @@ client.on('message', async (msg) => {
     await client.sendMessage(msg.from, reply);
 });
 
-// Port for local (Render ke liye bhi)
+// Port setting for Render
 const PORT = process.env.PORT || 3000;
 client.initialize().then(() => {
     console.log(`Aman ka server port ${PORT} pe hai!`);
+    // Explicit port binding
+    require('http').createServer((req, res) => {
+        res.writeHead(200);
+        res.end('Aman is here!');
+    }).listen(PORT, '0.0.0.0'); // Bind to 0.0.0.0 for Render
+}).catch((err) => {
+    console.error('Initialization error:', err);
 });
