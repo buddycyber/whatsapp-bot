@@ -106,6 +106,19 @@ client.initialize().then(() => {
         res.writeHead(200);
         res.end('Aman is here!');
     }).listen(PORT, '0.0.0.0'); // Bind to 0.0.0.0 for Render
+
+    // Add ping to keep session alive
+    setInterval(() => {
+        client.sendMessage('917817898892@c.us', 'Ping to keep session alive!'); // Apna number
+        console.log('Sent ping at', new Date());
+    }, 600000); // 10 minute (600,000 ms)
+
+    // Add auto-reconnect on disconnect
+    client.on('disconnected', (reason) => {
+        console.log('Disconnected due to:', reason);
+        console.log('Attempting to reconnect...');
+        client.initialize();
+    });
 }).catch((err) => {
     console.error('Initialization error:', err);
 });
